@@ -1,4 +1,8 @@
 h1 queryAll.jade
 	
 for result in results
-	p !{JSON.stringify(result)}
+	//-	p= result.id
+	p
+	for value, key in result
+		//-		td= key + "." + value
+		td= value+" "
