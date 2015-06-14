@@ -4,6 +4,9 @@ var mysql = require('mysql');
 var $conf = require('../conf/db');
 var $util = require('../util/util');
 var $sql = require('./stockSqlMapping');
+var stockQuote = require('./stockQuote');
+var async = require('async');
+var testfunc = require('./testfunc');
 
 // 使用连接池，提升性能
 var pool  = mysql.createPool($util.extend({}, $conf.mysql));
@@ -109,6 +112,62 @@ module.exports = {
                 connection.release();
             });
         });
+    },
+    queryPlay: function (req, res, next) {
+        var stocks = [{"id":1, "name":"OKEY", "number":"600760"}, {"id":2, "name":"STAR", "number":"600761"}];
+        var result;
+        for (var stock in stocks) {
+            console.log(stocks[stock]);
+            console.log(stocks[stock].number);
+            var sQuote = null;
+            
+             /*   function(){
+                    sQuote = stockQuote(stocks[stock].number);
+                    
+                },
+                function(){ 
+                    console.log('quoteover');
+                    console.log("readQuote: "+ sQuote);
+                    var sQuoteResult = {
+                    "id": stock.id,
+                    "number": stock.number,
+                    "name": sQuote[0],
+                    "currentPrice": sQuote[3]
+                    }
+                    result.append(sQuoteResult);
+                }
+            ]);*/
+
+           sQuote = stockQuote(stocks[stock].number);
+
+           if (sQuote === null) console.log("sQuote is NaN");
+            setconsole.log("readQuote: "+ sQuote);
+                var sQuoteResult = {
+                "id": stock.id,
+                "number": stock.number,
+                "name": res[0],
+                "currentPrice": res[3]
+                };
+
+                result.push(sQuoteResult);
+           
+            
+            /*console.log("readQuote: "+sQuote);
+            var sQuoteResult = {
+                "id": stock.id,
+                "number": stock.number,
+                "name": sQuote[0],
+                "currentPrice": sQuote[3]
+            }
+            result.append(sQuoteResult);*/
+        }
+        console.log("queryorder"+result[1]);
+        res.render("queryAll", {results: result});
+
+    },
+    queryPlay2: function(req,res,next) {
+        var a = testfunc(12);
+        console.log(a);
     }
 
 };

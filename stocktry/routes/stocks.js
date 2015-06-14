@@ -27,6 +27,15 @@ var samplejson2 = [{"id":2,"name":"haha","number":600761}];
 //res.render('queryAll', {result: JSON.stringify(samplejson1)});
 });
 
+router.get('/queryPlay', function(req, res, next) {
+stockDao.queryPlay(req, res, next);
+});
+
+router.get('/queryPlay2', function(req, res, next) {
+stockDao.queryPlay2(req, res, next);
+});
+
+
 router.get('/query', function(req, res, next) {
 stockDao.queryById(req, res, next);
 
