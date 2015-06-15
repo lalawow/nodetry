@@ -5,7 +5,11 @@ var $conf = require('../conf/db');
 var $util = require('../util/util');
 var $sql = require('./stockSqlMapping');
 var stockQuote = require('./stockQuote');
-var async = require('async');
+var qhttp = require('q-io/http');
+var StringDecoder = require('string_decoder').StringDecoder;
+var decoder = new StringDecoder('utf8');
+
+
 var testfunc = require('./testfunc');
 
 // 使用连接池，提升性能
@@ -115,7 +119,7 @@ module.exports = {
     },
     queryPlay: function (req, res, next) {
         var stocks = [{"id":1, "name":"OKEY", "number":"600760"}, {"id":2, "name":"STAR", "number":"600761"}];
-        var result;
+        var result = new Array();
         for (var stock in stocks) {
             console.log(stocks[stock]);
             console.log(stocks[stock].number);
@@ -137,20 +141,22 @@ module.exports = {
                     result.append(sQuoteResult);
                 }
             ]);*/
+           
+            sQuote = stockQuote(stocks[stock].number);
 
-           sQuote = stockQuote(stocks[stock].number);
-
-           if (sQuote === null) console.log("sQuote is NaN");
-            setconsole.log("readQuote: "+ sQuote);
+           //if (sQuote === null) console.log("sQuote is NaN");
+            setTimeout(function(){
+                var value = JSON.parse(sQuote).value;
+                console.log("readQuote: ", value);
                 var sQuoteResult = {
                 "id": stock.id,
                 "number": stock.number,
-                "name": res[0],
-                "currentPrice": res[3]
+                "name": value[0],
+                "currentPrice": value[3]
                 };
-
+                console.log("new Quote", sQuoteResult);
                 result.push(sQuoteResult);
-           
+           },500);
             
             /*console.log("readQuote: "+sQuote);
             var sQuoteResult = {
@@ -161,11 +167,51 @@ module.exports = {
             }
             result.append(sQuoteResult);*/
         }
-        console.log("queryorder"+result[1]);
-        res.render("queryAll", {results: result});
+        setTimeout(function(){
+            console.log("queryorder"+result[1]);
+            res.render("queryAll", {results: result});
+        },1000);
 
     },
     queryPlay2: function(req,res,next) {
+        var stocks = [{"id":1, "name":"OKEY", "number":"600760"}, {"id":2, "name":"STAR", "number":"600761"}];
+        var result = new Array();
+        for (var stock in stocks) {
+            var num = stocks[stock].number;
+            console.log(stocks[stock]);
+            console.log(num);
+            var squoteres;
+            var requrl = "http://hq.sinajs.cn/list=sh"+num;
+            qhttp.read(requrl)
+            .then(function (ch) {
+//                   console.log("stringlise "+ ch);
+//                    var chunk = new String();
+//                    chunk = "ok"+ch;
+                    var chunk = decoder.write(ch);
+                    console.log(ch);
+                    console.log(chunk);
+                    squoteres = chunk.split(",");
+                    console.log("中文试试 "+squoteres);
+                    console.log(squoteres[3]);
+                    console.log(squoteres[0]);
+                    squoteres[0] = squoteres[0].substring(23);
+                    console.log(squoteres[0]);
+                    var sQuoteResult = {
+                        "id": stocks[stock].id,
+                        "number": stocks[stock].number,
+                        "name": squoteres[0],
+                        "currentPrice": squoteres[3]
+                    };
+                    console.log("new Quote", sQuoteResult);
+                    result.push(sQuoteResult);
+            });           
+        }
+        setTimeout(function(){
+            console.log("total result", result);
+            res.render("queryAll", {results: result});
+        },500);
+    },
+    queryPlay3: function(req,res,next) {
         var a = testfunc(12);
         console.log(a);
     }

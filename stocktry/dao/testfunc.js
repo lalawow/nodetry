@@ -1,10 +1,10 @@
-var async = require("async");
+//var async = require("async");
 var callback = function(){};
 
 var testfunc = function(number) {
 
 	var result=new Array();
-	async.series([
+	/*async.series([
 		function(callback){
 			console.log("first");
 			for (var i = 0; i < number; i++) {
@@ -18,7 +18,7 @@ var testfunc = function(number) {
 			}
 			
 		}
-		]);
+		]);*/
     var s = null;
     if (s===null) console.log("s is null");
 	console.log(result);
