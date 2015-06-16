@@ -7,6 +7,10 @@ var $sql = require('./stockSqlMapping');
 var stockQuote = require('./stockQuote');
 var qhttp = require('q-io/http');
 var StringDecoder = require('string_decoder').StringDecoder;
+
+var iconv = require('iconv-lite');
+iconv.extendNodeEncodings();
+
 var decoder = new StringDecoder('utf8');
 
 
@@ -181,13 +185,19 @@ module.exports = {
             console.log(stocks[stock]);
             console.log(num);
             var squoteres;
+            var sQuoteResult = {
+                "id": stocks[stock].id,
+                "number": stocks[stock].number,
+                "name": null,
+                "currentPrice": null
+                };
             var requrl = "http://hq.sinajs.cn/list=sh"+num;
             qhttp.read(requrl)
             .then(function (ch) {
 //                   console.log("stringlise "+ ch);
 //                    var chunk = new String();
 //                    chunk = "ok"+ch;
-                    var chunk = decoder.write(ch);
+                    var chunk = iconv.decode(ch,"gbk");
                     console.log(ch);
                     console.log(chunk);
                     squoteres = chunk.split(",");
@@ -196,14 +206,16 @@ module.exports = {
                     console.log(squoteres[0]);
                     squoteres[0] = squoteres[0].substring(23);
                     console.log(squoteres[0]);
-                    var sQuoteResult = {
-                        "id": stocks[stock].id,
-                        "number": stocks[stock].number,
-                        "name": squoteres[0],
-                        "currentPrice": squoteres[3]
-                    };
-                    console.log("new Quote", sQuoteResult);
-                    result.push(sQuoteResult);
+                    sQuoteResult.name = squoteres[0];
+                    sQuoteResult.currentPrice = squoteres[3];
+                    result.push({
+                "id": stocks[stock].id,
+                "number": stocks[stock].number,
+                "name": squoteres[0],
+                "currentPrice": squoteres[3]
+                });
+                    console.log("new Quote", result);
+                    //result.push(sQuoteResult);
             });           
         }
         setTimeout(function(){
