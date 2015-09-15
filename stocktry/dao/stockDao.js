@@ -204,7 +204,7 @@ module.exports = {
                     console.log("中文试试 "+squoteres);
                     console.log(squoteres[3]);
                     console.log(squoteres[0]);
-                    squoteres[0] = squoteres[0].substring(23);
+                    squoteres[0] = squoteres[0].substring(21);
                     console.log(squoteres[0]);
                     sQuoteResult.name = squoteres[0];
                     sQuoteResult.currentPrice = squoteres[3];

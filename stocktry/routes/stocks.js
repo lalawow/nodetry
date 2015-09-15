@@ -16,15 +16,16 @@ stockDao.add(req, res, next);
 });
 
 router.get('/queryAll', function(req, res, next) {
-stockDao.queryAll(req, res, next);
+//stockDao.queryAll(req, res, next);
 
 //var samplejson3 = res.json;
 var samplejson1 = [{"id":1,"name":null,"number":600760},{"id":2,"name":"haha","number":600761}];
 var samplejson2 = [{"id":2,"name":"haha","number":600761}];
 
 //console.log("sample3: "+samplejson3);
-//console.log("res: "+ JSON.stringify(res));
-//res.render('queryAll', {result: JSON.stringify(samplejson1)});
+console.log("res: "+ JSON.stringify(samplejson1));
+res.render('queryAll', {results: samplejson1});
+
 });
 
 router.get('/queryPlay', function(req, res, next) {
