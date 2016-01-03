@@ -24,4 +24,5 @@ var testfunc = function(number) {
 	console.log(result);
 	return result;
 }
+
 module.exports = testfunc;

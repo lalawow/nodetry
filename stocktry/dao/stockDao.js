@@ -178,8 +178,8 @@ module.exports = {
 
     },
     queryPlay2: function(req,res,next) {
-        var stocks = [{"id":1, "name":"OKEY", "number":"600760"}, {"id":2, "name":"STAR", "number":"600761"}];
-        var result = new Array();
+        var stocks = [{"id":1, "name":"ZHHB", "number":"600760"}, {"id":2, "name":"ANHL", "number":"600761"}];
+        var result = [];
         for (var stock in stocks) {
             var num = stocks[stock].number;
             console.log(stocks[stock]);
@@ -191,6 +191,10 @@ module.exports = {
                 "name": null,
                 "currentPrice": null
                 };
+            var pes = {
+                "id": stocks[stock].id,
+                "number": stocks[stock].number
+            }
             var requrl = "http://hq.sinajs.cn/list=sh"+num;
             qhttp.read(requrl)
             .then(function (ch) {
@@ -208,15 +212,15 @@ module.exports = {
                     console.log(squoteres[0]);
                     sQuoteResult.name = squoteres[0];
                     sQuoteResult.currentPrice = squoteres[3];
-                    result.push({
-                "id": stocks[stock].id,
-                "number": stocks[stock].number,
-                "name": squoteres[0],
-                "currentPrice": squoteres[3]
-                });
-                    console.log("new Quote", result);
+                    pes.name = squoteres[0]
+                    pes.currentPrice = squoteres[3]
+                    console.log("new Pes", pes)
+                    return pes
                     //result.push(sQuoteResult);
-            });           
+            }).then(function(pp){
+                  result.push(pes);
+                  console.log("new Quote", result);
+            })        
         }
         setTimeout(function(){
             console.log("total result", result);
@@ -226,6 +230,89 @@ module.exports = {
     queryPlay3: function(req,res,next) {
         var a = testfunc(12);
         console.log(a);
-    }
+    },
+    queryPlay4: function(req,res,next) {
+        var stocks = [{"id":1, "name":"ZHHB", "number":"600760"}, {"id":2, "name":"ANHL", "number":"600761"}];
+        var result = [];
+        var result_chunk = [];
+        for (var stock in stocks) {
+            var num = stocks[stock].number;
+            console.log(stocks[stock]);
+            console.log(num);
+            var squoteres;
+            var sQuoteResult = {
+                "id": stocks[stock].id,
+                "number": stocks[stock].number,
+                "name": null,
+                "currentPrice": null
+                };
+            var pes = {
+                "id": stocks[stock].id,
+                "number": stocks[stock].number
+            }
+            var requrl = "http://hq.sinajs.cn/list=sh"+num;
+            qhttp.read(requrl)
+            .then(function (ch) {
+//                   console.log("stringlise "+ ch);
+//                    var chunk = new String();
+//                    chunk = "ok"+ch;
+                    var chunk = iconv.decode(ch,"gbk");
+                    result_chunk.push(chunk);
+                    console.log("chunk pile: ", result_chunk);
+/*                    console.log(ch);
+                    console.log(chunk);
+                    squoteres = chunk.split(",");
+                    console.log("中文试试 "+squoteres);
+                    console.log(squoteres[3]);
+                    console.log(squoteres[0]);
+                    squoteres[0] = squoteres[0].substring(21);
+                    console.log(squoteres[0]);
+                    sQuoteResult.name = squoteres[0];
+                    sQuoteResult.currentPrice = squoteres[3];
+                    pes.name = squoteres[0]
+                    pes.currentPrice = squoteres[3]
+                    console.log("new Pes", pes)
+                    return pes
+                    //result.push(sQuoteResult);
+            }).then(function(pp){
+                  result.push(pes);
+                  console.log("new Quote", result); */
+            })        
+        }
+        setTimeout(function(){
+            console.log("total chunk", result_chunk);
+//            console.log("total result", result);
+            var post_chunk;
+            post_chunk = build_result(result_chunk);
+            res.render("queryAll", {results: post_chunk});
+        },500);
+    },
 
 };
+
+var build_result = function(chunks) {
+    var n = 0
+    var res = []
+    console.log(chunks, "chunks", chunks.length)
+    for (var i = 0; i < chunks.length; i++) {
+        var chunk = chunks[i]
+        console.log(i,"chunk", chunk)
+        var squoteres = chunk.split(",");
+        var pes = {}
+        console.log("中文试试 "+squoteres);
+        console.log(squoteres[3]);
+        console.log(squoteres[0]);
+        squoteres[0] = squoteres[0].substring(21);
+        console.log(squoteres[0]);
+
+        pes.name = squoteres[0]
+        pes.currentPrice = squoteres[3]
+        n++
+        pes.id = n
+        console.log("pes: ",pes)
+        res.push(pes)
+
+            }
+    console.log(n)
+    return res
+}
