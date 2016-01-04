@@ -232,20 +232,56 @@ module.exports = {
         console.log(a);
     },
     queryPlay4: function(req,res,next) {
-        var stocks = readStocks()
+        var stocks = [{"id":1, "name":"ZHHB", "number":"600760"}, {"id":2, "name":"ANHL", "number":"600761"}];
         var result = [];
         var result_chunk = [];
         for (var stock in stocks) {
-            var num = stocks[stock].number
-            var location = stocks[stock].location
-            var requrl = "http://hq.sinajs.cn/list="+location+num;
+            var num = stocks[stock].number;
+            console.log(stocks[stock]);
+            console.log(num);
+            var squoteres;
+            var sQuoteResult = {
+                "id": stocks[stock].id,
+                "number": stocks[stock].number,
+                "name": null,
+                "currentPrice": null
+                };
+            var pes = {
+                "id": stocks[stock].id,
+                "number": stocks[stock].number
+            }
+            var requrl = "http://hq.sinajs.cn/list=sh"+num;
             qhttp.read(requrl)
             .then(function (ch) {
+//                   console.log("stringlise "+ ch);
+//                    var chunk = new String();
+//                    chunk = "ok"+ch;
                     var chunk = iconv.decode(ch,"gbk");
                     result_chunk.push(chunk);
+                    console.log("chunk pile: ", result_chunk);
+/*                    console.log(ch);
+                    console.log(chunk);
+                    squoteres = chunk.split(",");
+                    console.log("中文试试 "+squoteres);
+                    console.log(squoteres[3]);
+                    console.log(squoteres[0]);
+                    squoteres[0] = squoteres[0].substring(21);
+                    console.log(squoteres[0]);
+                    sQuoteResult.name = squoteres[0];
+                    sQuoteResult.currentPrice = squoteres[3];
+                    pes.name = squoteres[0]
+                    pes.currentPrice = squoteres[3]
+                    console.log("new Pes", pes)
+                    return pes
+                    //result.push(sQuoteResult);
+            }).then(function(pp){
+                  result.push(pes);
+                  console.log("new Quote", result); */
             })        
         }
         setTimeout(function(){
+            console.log("total chunk", result_chunk);
+//            console.log("total result", result);
             var post_chunk;
             post_chunk = build_result(result_chunk);
             res.render("queryAll", {results: post_chunk});
@@ -255,41 +291,28 @@ module.exports = {
 };
 
 var build_result = function(chunks) {
+    var n = 0
     var res = []
+    console.log(chunks, "chunks", chunks.length)
     for (var i = 0; i < chunks.length; i++) {
         var chunk = chunks[i]
+        console.log(i,"chunk", chunk)
         var squoteres = chunk.split(",");
         var pes = {}
         console.log("中文试试 "+squoteres);
-        pes.id = i+1
-        pes.name = squoteres[0].substring(21);
-        pes.currentPrice = parseFloat(squoteres[3])
-        var last_price = parseFloat(squoteres[2])
-        pes.change = (parseInt((pes.currentPrice/last_price-1)*10000)/100).toString()+"%"
-        var stock_amount = parseFloat(squoteres[8])
-        var deal_amount = parseFloat(squoteres[9])
-        pes.avg_price = parseInt(deal_amount/stock_amount*100)/100
-        pes.dev = (parseInt((pes.currentPrice/pes.avg_price-1)*10000)/100).toString()+"%"
-        pes.data_date = squoteres[30]
-        pes.data_time = squoteres[31]
+        console.log(squoteres[3]);
+        console.log(squoteres[0]);
+        squoteres[0] = squoteres[0].substring(21);
+        console.log(squoteres[0]);
+
+        pes.name = squoteres[0]
+        pes.currentPrice = squoteres[3]
+        n++
+        pes.id = n
         console.log("pes: ",pes)
         res.push(pes)
-        }
-    return res
-}
 
-var readStocks = function() {
-    var stocklist = ["600325", "002230", "600643","601106","600241","002563","002658","000709",
-    "603988","300004","000812","002600"]
-    var stocks = []
-    for (var stock in stocklist) {
-        var num = stocklist[stock]
-        var location = "sh"
-        if (num.substring[0]!="6") location="sz"
-        stocks.push({"number":num, "location":location})
-    }
-//    var stocks = [{"id":1, "name":"ZHHB", "number":"600760", "location":"sh"}, 
-//    {"id":2, "name":"ANHL", "number":"600761","location":"sh"}]
-    console.log(stocks)
-    return stocks
+            }
+    console.log(n)
+    return res
 }
