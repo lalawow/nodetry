@@ -260,8 +260,9 @@ var build_result = function(chunks) {
         var chunk = chunks[i]
         var squoteres = chunk.split(",");
         var pes = {}
-        console.log("中文试试 "+squoteres);
+//        console.log("中文试试 "+squoteres);
         pes.id = i+1
+        pes.stock_id = squoteres[0].substr(13,6)     
         pes.name = squoteres[0].substring(21);
         pes.currentPrice = parseFloat(squoteres[3])
         var last_price = parseFloat(squoteres[2])
@@ -272,7 +273,7 @@ var build_result = function(chunks) {
         pes.dev = (parseInt((pes.currentPrice/pes.avg_price-1)*10000)/100).toString()+"%"
         pes.data_date = squoteres[30]
         pes.data_time = squoteres[31]
-        console.log("pes: ",pes)
+//        console.log("pes: ",pes)
         res.push(pes)
         }
     return res
@@ -285,7 +286,7 @@ var readStocks = function() {
     for (var stock in stocklist) {
         var num = stocklist[stock]
         var location = "sh"
-        if (num.substring[0]!="6") location="sz"
+        if (num.substr(0,1)!="6") location="sz"
         stocks.push({"number":num, "location":location})
     }
 //    var stocks = [{"id":1, "name":"ZHHB", "number":"600760", "location":"sh"}, 
