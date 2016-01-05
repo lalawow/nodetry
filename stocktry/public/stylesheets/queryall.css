@@ -1,0 +1,19 @@
+.one_stock {
+	display: flex;
+	color: blue;
+}
+.id {
+	width: 3%;
+}
+
+.stock_id,.name,.currentPrice{
+	width: 7%;
+}
+
+.greenFont {
+	color: green;
+}
+
+.redFont {
+	color: red;
+}
