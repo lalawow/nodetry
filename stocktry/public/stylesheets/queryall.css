@@ -1,19 +1,30 @@
 .one_stock {
 	display: flex;
-	color: blue;
+	color: white;
 }
 .id {
 	width: 3%;
 }
 
-.stock_id,.name,.currentPrice{
+.stock_id, .name, .currentPrice, .change, .avg_price, .dev, .data_date, .data_time{
 	width: 7%;
+	text-align: center;
 }
 
 .greenFont {
 	color: green;
+	font-weight: bold;
 }
 
 .redFont {
 	color: red;
+	font-weight: 500;
+}
+
+body {
+	background: black;
+}
+
+h1 {
+	color: white;
 }
