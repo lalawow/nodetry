@@ -2,13 +2,30 @@
 	display: flex;
 	color: white;
 }
+
+.space{
+	width: 1%;
+}
+
 .id {
 	width: 3%;
 }
 
-.stock_id, .name, .currentPrice, .change, .avg_price, .dev, .data_date, .data_time{
+.stock_id, .name{
+	width: 5%;
+	text-align: right;
+	font-family: Consolas, serif;
+}
+
+.currentPrice, .change, .avg_price, .dev {
+	width: 5%;
+	text-align: right;
+	font-family: Consolas, serif;
+}
+
+ .data_date, .data_time{
 	width: 7%;
-	text-align: center;
+	text-align: right;
 	font-family: Consolas, serif;
 }
 

@@ -258,12 +258,12 @@ var build_result = function(chunks) {
     var res = []
     var init_pes = {
         id: "序号",
-        stock_id:"股票代码",
-        name:"股票名称",
-        currentPrice:"当前价格",
-        change:"当前涨幅",
+        stock_id:"代码",
+        name:"名称",
+        currentPrice:"价格",
+        change:"涨幅%",
         avg_price:"均价",
-        dev:"均价差",
+        dev:"均价差%",
         data_date:"日期",
         data_time:"时间"
     }
