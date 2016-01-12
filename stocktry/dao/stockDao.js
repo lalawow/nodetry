@@ -256,6 +256,18 @@ module.exports = {
 
 var build_result = function(chunks) {
     var res = []
+    var init_pes = {
+        id: "序号",
+        stock_id:"股票代码",
+        name:"股票名称",
+        currentPrice:"当前价格",
+        change:"当前涨幅",
+        avg_price:"均价",
+        dev:"均价差",
+        data_date:"日期",
+        data_time:"时间"
+    }
+    res.push(init_pes)
     for (var i = 0; i < chunks.length; i++) {
         var chunk = chunks[i]
         var squoteres = chunk.split(",");
@@ -280,8 +292,8 @@ var build_result = function(chunks) {
 }
 
 var readStocks = function() {
-    var stocklist = ["600325", "002230", "600643","601106","600241","002563","002658","000709",
-    "603988","300004","000812","002600"]
+    var stocklist = ["600325", "002230", "600643","601106","600241","002563","002658",
+"300004","000812","002600","002239"]
     var stocks = []
     for (var stock in stocklist) {
         var num = stocklist[stock]

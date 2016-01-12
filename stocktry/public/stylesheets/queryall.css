@@ -9,6 +9,7 @@
 .stock_id, .name, .currentPrice, .change, .avg_price, .dev, .data_date, .data_time{
 	width: 7%;
 	text-align: center;
+	font-family: Consolas, serif;
 }
 
 .greenFont {
