@@ -292,8 +292,8 @@ var build_result = function(chunks) {
 }
 
 var readStocks = function() {
-    var stocklist = ["600325", "002230", "600643","601106","600241","002563","002658",
-"300004","000812","002600","002239"]
+    var stocklist = ["600325", "002230", "600643","601106","002658",
+"300004","002239","300509","300017","300113","002049","600680","000760"]
     var stocks = []
     for (var stock in stocklist) {
         var num = stocklist[stock]

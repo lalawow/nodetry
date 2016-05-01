@@ -1,0 +1,44 @@
+h1 {
+  font-family: Georgia;
+  color: White;
+  font-size: 40px;
+}
+
+h3{
+  font-family: Lobster;
+  color: orange;
+}
+
+h2{
+  font-family: signika;
+  
+}
+body{
+//  background-image: url("http://www.dennisgoulet.us/dg/wp-content/uploads/2011/01/LS-1218-003-thumbnail.jpg");
+    background-color: black;
+    background-repeat: no-repeat;
+    background-size: 100% 250%;
+}
+.description {
+  color: white;
+  font-size: 26px;
+  
+}
+
+.quote-area {
+  background-color: lightgray;
+  border-radius: 10px;
+  font-family: Roboto;
+}
+
+#quote-text {
+  font-size: 26px;
+}
+
+#quote-author {
+  font-size:20px
+}
+
+.head_img {
+  height: 80px;
+}
