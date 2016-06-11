@@ -40,6 +40,9 @@ router.get('/queryPlay4', function(req, res, next) {
 stockDao.queryPlay4(req, res, next);
 });
 
+router.get('/queryPlay5', function(req, res, next) {
+stockDao.queryPlay5(req, res, next);
+});
 
 router.get('/query', function(req, res, next) {
 stockDao.queryById(req, res, next);

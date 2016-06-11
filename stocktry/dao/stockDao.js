@@ -251,6 +251,28 @@ module.exports = {
             res.render("queryAll", {results: post_chunk});
         },500);
     },
+        queryPlay5: function(req,res,next) {
+        var stocks = readStocks()
+        var result = [];
+        var result_chunk = [];
+        for (var stock in stocks) {
+            var num = stocks[stock].number
+            var location = stocks[stock].location
+            var requrl = "http://hq.sinajs.cn/list="+location+num;
+            qhttp.read(requrl)
+            .then(function (ch) {
+                    var chunk = iconv.decode(ch,"gbk");
+                    result_chunk.push(chunk);
+            })        
+        }
+        setTimeout(function(){
+            var post_chunk;
+            post_chunk = build_result(result_chunk);
+            console.log(post_chunk[1])
+            res.writeHead(200, { 'Content-Type': 'application/json' })
+            res.end(JSON.stringify({result: post_chunk}))
+        },500);
+    },
 
 };
 
@@ -267,7 +289,7 @@ var build_result = function(chunks) {
         data_date:"日期",
         data_time:"时间"
     }
-    res.push(init_pes)
+//    res.push(init_pes)
     for (var i = 0; i < chunks.length; i++) {
         var chunk = chunks[i]
         var squoteres = chunk.split(",");
@@ -278,11 +300,13 @@ var build_result = function(chunks) {
         pes.name = squoteres[0].substring(21);
         pes.currentPrice = parseFloat(squoteres[3])
         var last_price = parseFloat(squoteres[2])
-        pes.change = (parseInt((pes.currentPrice/last_price-1)*10000)/100).toString()+"%"
+//        pes.change = (parseInt((pes.currentPrice/last_price-1)*10000)/100).toString()+"%"
+        pes.change = (pes.currentPrice/last_price-1)*100
         var stock_amount = parseFloat(squoteres[8])
         var deal_amount = parseFloat(squoteres[9])
         pes.avg_price = parseInt(deal_amount/stock_amount*100)/100
-        pes.dev = (parseInt((pes.currentPrice/pes.avg_price-1)*10000)/100).toString()+"%"
+//        pes.dev = (parseInt((pes.currentPrice/pes.avg_price-1)*10000)/100).toString()+"%"
+        pes.dev=(pes.currentPrice/pes.avg_price-1)*100
         pes.data_date = squoteres[30]
         pes.data_time = squoteres[31]
 //        console.log("pes: ",pes)

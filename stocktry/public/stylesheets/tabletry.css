@@ -1,0 +1,53 @@
+.one_stock {
+	display: flex;
+	color: white;
+}
+
+.space{
+	width: 1%;
+}
+
+.id {
+	width: 3%;
+}
+
+.stock_id, .name{
+	width: 5%;
+	text-align: right;
+	font-family: Consolas, serif;
+}
+
+.currentPrice, .change, .avg_price, .dev {
+	width: 5%;
+	text-align: right;
+	font-family: Consolas, serif;
+}
+
+ .data_date, .data_time{
+	width: 7%;
+	text-align: right;
+	font-family: Consolas, serif;
+}
+
+.greenFont {
+	color: green;
+	font-weight: bold;
+}
+
+.redFont {
+	color: red;
+	font-weight: 500;
+}
+
+body {
+	background: black;
+}
+
+h1, tr{
+	color: white;
+		font-family: Consolas, serif;
+}
+
+table {
+	text-align: center;
+}
