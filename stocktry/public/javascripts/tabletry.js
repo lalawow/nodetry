@@ -74,6 +74,9 @@ $(document).ready(function() {
             } else {
                 table.cell(i, 6).nodes().to$().text("")
             }
+            table.cell(i, 0).nodes().to$().addClass("blueFont")
+            table.cell(i, 1).nodes().to$().addClass("blueFont")
+            table.cell(i, 2).nodes().to$().addClass("blueFont")
         }
 
     })
@@ -82,6 +85,18 @@ $(document).ready(function() {
 
 })
 
+
+var addStock = function() {
+    var stock = $("#stockNumber").val()
+    console.log(stock)
+}
+
+var removeStock = function() {
+    var stock = $("#stockNumber").val()
+    console.log(stock)
+}
+
+/*
 var init_pes = {
     id: "序号",
     stock_id: "代码",
@@ -93,3 +108,4 @@ var init_pes = {
     data_date: "日期",
     data_time: "时间"
 }
+*/

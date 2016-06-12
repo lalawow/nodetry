@@ -5,12 +5,18 @@
     <title>STOCK TABLE</title>
 <link rel='stylesheet' href='/stylesheets/jquery.dataTables.min.css'>   
 <link rel='stylesheet' href='/stylesheets/tabletry.css'> 
+    <script src='/javascripts/jquery-2.1.3.min.js'></script>
+
+        <script src="/javascripts/jquery.dataTables.min.js"></script>
+<script src="/javascripts/tabletry.js"></script>
+
   </head>
 
   <body>
+  <div>
   <table id="example" class="display" cellspacing="0" width="100%">
           <thead>
-            <tr>
+            <tr class="blueFont">
                 <th>序号</th>
                 <th>代码</th>
                 <th>名称</th>
@@ -23,11 +29,16 @@
             </tr>
         </thead>
   </table>
+</div>
+<br>
+<div>
+  <form id="stockChange">
+  <div><input class="blueFont" id="stockNumber" type="text" value="002000"/></div>
+  <div><button class="blueFont" id="addStockButton" type="button" onclick="addStock()">增加</button></div>
+  <div><button class="blueFont" id="removeStockButton" type="button" onclick="removeStock()">删除</button></div>
+  </form>
+</div>
 
-    <script src='/javascripts/jquery-2.1.3.min.js'></script>
-
-        <script src="/javascripts/jquery.dataTables.min.js"></script>
-<script src="/javascripts/tabletry.js"></script>
     
     
     

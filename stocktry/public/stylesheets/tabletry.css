@@ -39,15 +39,34 @@
 	font-weight: 500;
 }
 
+.blueFont {
+	color: #0055a2;
+}
 body {
-	background: black;
+
 }
 
 h1, tr{
-	color: white;
+
 		font-family: Consolas, serif;
 }
 
 table {
 	text-align: center;
 }
+
+form {
+	display: flex;
+}
+ input{
+ 	margin: 10px;
+ 	font-size: 20px;
+ 	padding: 5px;
+ }
+
+ button {
+    font-size: 15px;
+
+ 	padding: 7.5px;
+ 	margin: 10px;
+ }
