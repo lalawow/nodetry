@@ -301,6 +301,9 @@ module.exports = {
             }))
         }, 500);
     },
+    queryPlay6: function(req, res, next) {
+        readFileStockList(res, readStocks2)
+    },
 
 };
 
@@ -346,9 +349,6 @@ var build_result = function(chunks) {
 var readStocks = function() {
     var stocklist = ["600325", "002230", "600643","601106","002658","300004","002239","300509","300017","300113","002049","600680","000760"]
 
-//    var stocklist = readFileStockList()
-    console.log("readIsDone? "+readFileStockList())
-
     var stocks = []
     for (var stock in stocklist) {
         var num = stocklist[stock]
@@ -365,18 +365,63 @@ var readStocks = function() {
     return stocks
 }
 
-var readFileStockList = function() {
+var readFileStockList = function(res,act) {
     var content
-    var readIsDone = false
     // First I want to read the file
     fs.readFile('./public/stocklist.txt', function read(err, data) {
         if (err) {
             throw err
         }
         content = data
-        readIsDone=true
+        var jp = JSON.parse(content)
+        act(res, jp.stocks)
     })
-    var waitTill = new Date(new Date().getTime() + 1000);
-while(waitTill > new Date()){}
-    return readIsDone
+
+}
+
+var readStocks2 = function(res, stocklist) {
+//    var stocklist = ["600325", "002230", "600643","601106","002658","300004","002239","300509","300017","300113","002049","600680","000760"]
+
+
+
+    var stocks = []
+    for (var stock in stocklist) {
+        var num = stocklist[stock]
+        var location = "sh"
+        if (num.substr(0, 1) != "6") location = "sz"
+        stocks.push({
+            "number": num,
+            "location": location
+        })
+    }
+    //    var stocks = [{"id":1, "name":"ZHHB", "number":"600760", "location":"sh"}, 
+    //    {"id":2, "name":"ANHL", "number":"600761","location":"sh"}]
+    //    console.log(stocks)
+    getStockData(res, stocks)
+}
+
+var getStockData = function(res,stocks) {
+    var result = [];
+        var result_chunk = [];
+        for (var stock in stocks) {
+            var num = stocks[stock].number
+            var location = stocks[stock].location
+            var requrl = "http://hq.sinajs.cn/list=" + location + num;
+            qhttp.read(requrl)
+                .then(function(ch) {
+                    var chunk = iconv.decode(ch, "gbk");
+                    result_chunk.push(chunk);
+                })
+        }
+        setTimeout(function() {
+            var post_chunk;
+            post_chunk = build_result(result_chunk);
+            console.log(post_chunk[1])
+            res.writeHead(200, {
+                'Content-Type': 'application/json'
+            })
+            res.end(JSON.stringify({
+                result: post_chunk
+            }))
+        }, 500);
 }
