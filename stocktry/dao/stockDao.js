@@ -434,7 +434,9 @@ var getStockData = function(res,stocks) {
 }
 
 var addStock2List = function(res, stocklist, new_number) {
-    stocklist.push(new_number)
+    var isNewNumber = true
+    if (stocklist.indexOf(new_number)>-1) isNewNumber=false
+    if (isNewNumber) stocklist.push(new_number)
     readStocks2(res, stocklist)
     saveNewStockList(stocklist)
 }

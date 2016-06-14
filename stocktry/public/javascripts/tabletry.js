@@ -60,7 +60,7 @@ var getNewTable = function(url_string) {
                 data: "data_time"
             }],
             "order": [
-                [0, "asc"]
+                [6, "desc"]
             ],
             paging: false,
             searching: false,
