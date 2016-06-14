@@ -9,6 +9,7 @@ var stockQuote = require('./stockQuote');
 var qhttp = require('q-io/http');
 var StringDecoder = require('string_decoder').StringDecoder;
 var iconv = require('iconv-lite');
+var stocklistFile = './public/stocklist.txt'
 iconv.extendNodeEncodings();
 
 var decoder = new StringDecoder('utf8');
@@ -292,7 +293,7 @@ module.exports = {
         setTimeout(function() {
             var post_chunk;
             post_chunk = build_result(result_chunk);
-            console.log(post_chunk[1])
+//            console.log(post_chunk[1])
             res.writeHead(200, {
                 'Content-Type': 'application/json'
             })
@@ -306,7 +307,10 @@ module.exports = {
     },
     addStock: function(stock_number, res, next) {
         readFileStockList(res, addStock2List, stock_number)
-    }
+    },
+    deleteStock: function(stock_number, res, next) {
+        readFileStockList(res,deleteStock2List,stock_number)
+    },
 
 };
 
@@ -371,7 +375,7 @@ var readStocks = function() {
 var readFileStockList = function(res,act,new_number) {
     var content
     // First I want to read the file
-    fs.readFile('./public/stocklist.txt', function read(err, data) {
+    fs.readFile(stocklistFile, function read(err, data) {
         if (err) {
             throw err
         }
@@ -435,6 +439,19 @@ var addStock2List = function(res, stocklist, new_number) {
     saveNewStockList(stocklist)
 }
 
+var deleteStock2List = function(res, stocklist, old_number) {
+    var index = stocklist.indexOf(old_number)
+    if (index>-1) {
+        stocklist.splice(index,1)
+    }
+    readStocks2(res, stocklist)
+    saveNewStockList(stocklist)
+}
+
 var saveNewStockList = function(stocklist) {
-    
+    var content = JSON.stringify({"stocks": stocklist})
+    console.log("save content: "+content)
+    fs.writeFile(stocklistFile,content, function (err) {
+  if (err) return console.log(err);
+})
 }

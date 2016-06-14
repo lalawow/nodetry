@@ -10,15 +10,14 @@ var initTable = function() {
 
 var addStock = function() {
     var stock = $("#stockNumber").val()
-    console.log(stock)
-    getNewTable("/stocks/queryplay7/addStock="+stock)
-//    refreshTable()
-//    setTimeout(refreshTable(),100)
+        //    console.log(stock)
+    getNewTable("/stocks/queryplay7/addStock=" + stock)
 }
 
 var removeStock = function() {
     var stock = $("#stockNumber").val()
-    console.log(stock)
+        //    console.log(stock)
+    getNewTable("/stocks/queryplay7/deleteStock=" + stock)
 }
 
 var refreshTable = function() {
@@ -28,12 +27,12 @@ var refreshTable = function() {
 }
 
 var getNewTable = function(url_string) {
-var tbody = $('#example').children("tbody")
-if (tbody.length>0) {
-    table.destroy()
-    tbody.html("")
-}
-        $.getJSON(url_string, function(res) {
+    var tbody = $('#example').children("tbody")
+    if (tbody.length > 0) {
+        table.destroy()
+        tbody.html("")
+    }
+    $.getJSON(url_string, function(res) {
         var tabledata = res.result
         table = $('#example').DataTable({
             data: tabledata,
@@ -48,13 +47,13 @@ if (tbody.length>0) {
                 render: $.fn.dataTable.render.number(',', '.', 2, '$')
             }, {
                 data: "change",
-                render: $.fn.dataTable.render.number(',', '.', 2, '','%')
+                render: $.fn.dataTable.render.number(',', '.', 2, '', '%')
             }, {
                 data: "avg_price",
                 render: $.fn.dataTable.render.number(',', '.', 2, '$')
             }, {
                 data: "dev",
-                render: $.fn.dataTable.render.number(',', '.', 2, '','%')
+                render: $.fn.dataTable.render.number(',', '.', 2, '', '%')
             }, {
                 data: "data_date"
             }, {
@@ -97,5 +96,5 @@ if (tbody.length>0) {
     })
 
 
-   
+
 }

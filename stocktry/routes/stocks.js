@@ -54,6 +54,11 @@ router.get('/queryplay7/addStock=:stock_number', function(req, res, next) {
 stockDao.addStock(req.params.stock_number,res)
 });
 
+// /stocks/queryplay7/deleteStock=:stock
+router.get('/queryplay7/deleteStock=:stock_number', function(req, res, next) {
+stockDao.deleteStock(req.params.stock_number,res)
+});
+
 router.get('/query', function(req, res, next) {
 stockDao.queryById(req, res, next);
 
