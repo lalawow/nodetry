@@ -304,6 +304,9 @@ module.exports = {
     queryPlay6: function(req, res, next) {
         readFileStockList(res, readStocks2)
     },
+    addStock: function(stock_number, res, next) {
+        readFileStockList(res, addStock2List, stock_number)
+    }
 
 };
 
@@ -365,7 +368,7 @@ var readStocks = function() {
     return stocks
 }
 
-var readFileStockList = function(res,act) {
+var readFileStockList = function(res,act,new_number) {
     var content
     // First I want to read the file
     fs.readFile('./public/stocklist.txt', function read(err, data) {
@@ -374,7 +377,7 @@ var readFileStockList = function(res,act) {
         }
         content = data
         var jp = JSON.parse(content)
-        act(res, jp.stocks)
+        act(res, jp.stocks,new_number)
     })
 
 }
@@ -424,4 +427,14 @@ var getStockData = function(res,stocks) {
                 result: post_chunk
             }))
         }, 500);
+}
+
+var addStock2List = function(res, stocklist, new_number) {
+    stocklist.push(new_number)
+    readStocks2(res, stocklist)
+    saveNewStockList(stocklist)
+}
+
+var saveNewStockList = function(stocklist) {
+    
 }

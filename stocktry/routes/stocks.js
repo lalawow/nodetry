@@ -48,6 +48,12 @@ router.get('/queryPlay6', function(req, res, next) {
 stockDao.queryPlay6(req, res, next);
 });
 
+
+// /stocks/queryplay7/addStock=:stock
+router.get('/queryplay7/addStock=:stock_number', function(req, res, next) {
+stockDao.addStock(req.params.stock_number,res)
+});
+
 router.get('/query', function(req, res, next) {
 stockDao.queryById(req, res, next);
 

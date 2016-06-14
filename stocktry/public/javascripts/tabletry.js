@@ -4,7 +4,36 @@ $(document).ready(function() {
 })
 
 var initTable = function() {
-        $.getJSON("/stocks/queryplay6", function(res) {
+    getNewTable("/stocks/queryplay6")
+}
+
+
+var addStock = function() {
+    var stock = $("#stockNumber").val()
+    console.log(stock)
+    getNewTable("/stocks/queryplay7/addStock="+stock)
+//    refreshTable()
+//    setTimeout(refreshTable(),100)
+}
+
+var removeStock = function() {
+    var stock = $("#stockNumber").val()
+    console.log(stock)
+}
+
+var refreshTable = function() {
+    table.destroy()
+    $('#example').children("tbody").html("")
+    initTable()
+}
+
+var getNewTable = function(url_string) {
+var tbody = $('#example').children("tbody")
+if (tbody.length>0) {
+    table.destroy()
+    tbody.html("")
+}
+        $.getJSON(url_string, function(res) {
         var tabledata = res.result
         table = $('#example').DataTable({
             data: tabledata,
@@ -66,23 +95,7 @@ var initTable = function() {
         }
 
     })
-}
 
 
-var addStock = function() {
-    var stock = $("#stockNumber").val()
-    console.log(stock)
-    refreshTable()
-//    setTimeout(refreshTable(),100)
-}
-
-var removeStock = function() {
-    var stock = $("#stockNumber").val()
-    console.log(stock)
-}
-
-var refreshTable = function() {
-    table.destroy()
-    $('#example').children("tbody").html("")
-    initTable()
+   
 }
